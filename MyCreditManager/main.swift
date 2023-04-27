@@ -84,7 +84,7 @@ func deleteGrade() {
     print("성적을 삭제할 학생의 이름, 과목 이름을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift")
     let inputInfo = readLine()!.split(separator:" ").map{String($0)}
     // 입력 예외 처리
-    if (inputInfo.isEmpty) || (inputInfo.count != 2) { // 공백이거나 정보를 덜 입력했을 경우
+    if inputInfo.isEmpty || inputInfo.count != 2 { // 공백이거나 정보를 덜 입력했을 경우
         print("입력이 잘못되었습니다. 다시 확인해주세요.")
     } else if let index = students.firstIndex(where: { $0.name == inputInfo[0] }) { // 기존에 학생이 존재할 경우
         students[index].grade = nil // 성적 삭제
