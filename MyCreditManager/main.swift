@@ -72,10 +72,12 @@ func addGrade() {
     if inputInfo.isEmpty || inputInfo.count != 3 || !gradeStandard.contains(where: { $0.0 == inputInfo[2] }) {
         // 공백이거나 정보를 덜 입력했거나 성적이 이상하게 입력됐을 경우
         print("입력이 잘못되었습니다. 다시 확인해주세요.")
-    } else if let index = students.firstIndex(where: { $0.name == inputInfo[0] && $0.subject == inputInfo[1] }) { // 기존에 학생이 존재하면서 과목, 성적이 존재할 경우
+    } else if let index = students.firstIndex(where: { $0.name == inputInfo[0] && $0.subject == inputInfo[1] }) { // 기존에 학생이 존재하면서 입력한 과목이 존재할 경우
         students[index].grade = inputInfo[2] // 성적 갱신
+        print("\(inputInfo[0]) 학생의 \(inputInfo[1]) 과목이 \(inputInfo[2])로 추가(변경)되었습니다.")
     } else { // 기존에 학생과 과목이 존재하지 않을 경우
         students.append(Student(name: inputInfo[0], subject: inputInfo[1], grade: inputInfo[2]))
+        print("\(inputInfo[0]) 학생의 \(inputInfo[1]) 과목이 \(inputInfo[2])로 추가(변경)되었습니다.")
     }
 }
 
@@ -86,7 +88,7 @@ func deleteGrade() {
     // 입력 예외 처리
     if inputInfo.isEmpty || inputInfo.count != 2 { // 공백이거나 정보를 덜 입력했을 경우
         print("입력이 잘못되었습니다. 다시 확인해주세요.")
-    } else if let index = students.firstIndex(where: { $0.name == inputInfo[0] }) { // 기존에 학생이 존재할 경우
+    } else if let index = students.firstIndex(where: { $0.name == inputInfo[0] && $0.subject == inputInfo[1] }) { // 기존에 학생이 존재하면서 입력한 과목이 존재할 경우
         students[index].grade = nil // 성적 삭제
         print("\(inputInfo[0]) 학생의 \(inputInfo[1]) 과목의 성적이 삭제되었습니다.")
     } else { // 학생이 존재하지 않을 경우
@@ -102,10 +104,10 @@ func showAverage() {
     if inputName == "" { // 공백일 경우
         print("입력이 잘못되었습니다. 다시 확인해주세요.")
     } else if students.filter({$0.name == inputName}).count != 0 { // 학생이 존재할 경우
-        let filteredStudents = students.filter({$0.name == inputName}) // 입력한 이름으로 필터링
+        let filteredStudents = students.filter({$0.name == inputName && $0.subject != nil}) // 입력한 이름으로 필터링
         var sum = 0.0 // 평점 구하기 위한 합계 변수
 
-        // students에 존재하는 학생 전체 탐색 (한 학생의 모든 과목 정보에 접근하기 위함)
+        // 해당 학생만으로 필터링된 filteredStudents 전체 탐색 (한 학생의 모든 과목 정보에 접근하기 위함)
         for value in filteredStudents {
             print("\(value.subject ?? "과목 미기입"): \(value.grade ?? "성적 미기입")")
             // gradeStandard에 해당하는 학점 옵셔널 바인딩
